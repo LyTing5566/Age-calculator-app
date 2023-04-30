@@ -4,7 +4,45 @@ const textShadow = {
   textShadow: '2px 2px 4px #333333',
 };
 
+// 計算指定月份有幾天
+function daysInMonth(month, year) {
+  return new Date(year, month + 1, 0).getDate();
+}
+
 function App() {
+  const [year, setYear] = useState();
+  const [month, setMonth] = useState();
+  const [day, setDay] = useState();
+  const [ageData, setData] = useState({});
+
+  function calculateAge(birthYear, birthMonth, birthDay) {
+    const today = new Date();
+    const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
+    let age = today.getFullYear() - birthYear;
+    let month = today.getMonth() - birthMonth + 1;
+    let day = today.getDate() - birthDay;
+
+    if (today < birthDate.setFullYear(today.getFullYear())) {
+      age--;
+      month = 12 - birthMonth + today.getMonth();
+      day =
+        today.getDate() +
+        daysInMonth(today.getMonth(), today.getFullYear()) -
+        birthDay;
+    }
+
+    if (month < 0) {
+      age--;
+      month = 12 - birthMonth + today.getMonth();
+    }
+
+    setData({
+      age: age,
+      month: month,
+      day: day,
+    });
+  }
+
   return (
     //
     <div
@@ -25,6 +63,7 @@ function App() {
             type="text"
             className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6"
             placeholder="DD"
+            onChange={(e) => setDay(e.target.value)}
           />
         </div>
 
@@ -39,6 +78,7 @@ function App() {
             type="text"
             className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6"
             placeholder="MM"
+            onChange={(e) => setMonth(e.target.value)}
           />
         </div>
 
@@ -53,6 +93,7 @@ function App() {
             type="text"
             className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6"
             placeholder="YYYY"
+            onChange={(e) => setYear(e.target.value)}
           />
         </div>
       </div>
@@ -62,7 +103,10 @@ function App() {
           <hr className="bg-[#50d71e] border w-[632px]" />
         </div>
         <div className="">
-          <button className=" self-center">
+          <button
+            onClick={() => calculateAge(year, month, day)}
+            className=" self-center"
+          >
             <svg
               width="96"
               height="96"
@@ -90,21 +134,21 @@ function App() {
       <div className="font-extrabold" style={textShadow}>
         <div>
           <span className="text-[104px] leading-[114px] mr-2 text-[#854DFF]">
-            38
+            {ageData.age}
           </span>
           <span className="text-[104px] leading-[114px]">years</span>
         </div>
 
         <div>
           <span className="text-[104px] leading-[114px] mr-2 text-[#854DFF]">
-            3
+            {ageData.month}
           </span>
           <span className="text-[104px] leading-[114px]">months</span>
         </div>
 
         <div>
           <span className="text-[104px] leading-[114px] mr-2 text-[#854DFF]">
-            26
+            {ageData.day}
           </span>
           <span className="text-[104px] leading-[114px]">days</span>
         </div>
