@@ -9,6 +9,19 @@ function daysInMonth(month, year) {
   return new Date(year, month + 1, 0).getDate();
 }
 
+function isDateValid(year, month, day) {
+  year = parseInt(year);
+  month = parseInt(month);
+  day = parseInt(day);
+  console.log(typeof year);
+  const date = new Date(year, month - 1, day);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() === month - 1 &&
+    date.getDate() === day
+  );
+}
+
 function App() {
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
@@ -16,6 +29,12 @@ function App() {
   const [ageData, setData] = useState({});
 
   function calculateAge(birthYear, birthMonth, birthDay) {
+    if (isDateValid(birthYear, birthMonth, birthDay)) {
+      console.log('有這天');
+    } else {
+      console.log('沒這天');
+    }
+
     const today = new Date();
     const birthDate = new Date(birthYear, birthMonth - 1, birthDay);
     let age = today.getFullYear() - birthYear;
@@ -47,7 +66,7 @@ function App() {
     <div
       className=" bg-white w-[860px] h-[651px] mx-auto mt-10 p-14"
       style={{
-        borderRadius: '0 0 200px 0',
+        borderRadius: '20px 20px 200px 20px',
       }}
     >
       <div className="flex gap-8">
@@ -130,21 +149,21 @@ function App() {
       <div className="font-extrabold" style={textShadow}>
         <div>
           <span className="text-[104px] leading-[114px] mr-2 text-[#854DFF]">
-            {ageData.age}
+            {ageData.age ? ageData.age : '--'}
           </span>
           <span className="text-[104px] leading-[114px]">years</span>
         </div>
 
         <div>
           <span className="text-[104px] leading-[114px] mr-2 text-[#854DFF]">
-            {ageData.month}
+            {ageData.month ? ageData.month : '--'}
           </span>
           <span className="text-[104px] leading-[114px]">months</span>
         </div>
 
         <div>
           <span className="text-[104px] leading-[114px] mr-2 text-[#854DFF]">
-            {ageData.day}
+            {ageData.day ? ageData.day : '--'}
           </span>
           <span className="text-[104px] leading-[114px]">days</span>
         </div>
