@@ -63,3 +63,7 @@ span {
 body {
   background-color: rgb(255, 244, 230);
 }
+
+.text-red {
+  color: red;
+}

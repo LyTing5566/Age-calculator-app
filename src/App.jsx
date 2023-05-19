@@ -13,7 +13,7 @@ function isDateValid(year, month, day) {
   year = parseInt(year);
   month = parseInt(month);
   day = parseInt(day);
-  console.log(typeof year);
+
   const date = new Date(year, month - 1, day);
   return (
     date.getFullYear() === year &&
@@ -27,12 +27,20 @@ function App() {
   const [month, setMonth] = useState();
   const [day, setDay] = useState();
   const [ageData, setData] = useState({});
+  const [dayError, setDayError] = useState('');
+  const [monthError, setMonthError] = useState('');
+  const [yearError, setYearError] = useState('');
 
   function calculateAge(birthYear, birthMonth, birthDay) {
     if (isDateValid(birthYear, birthMonth, birthDay)) {
-      console.log('有這天');
+      setDayError('');
+      setMonthError('');
+      setYearError('');
     } else {
-      console.log('沒這天');
+      setDayError('Must be a valid day');
+      setMonthError('Must be a valid month');
+      setYearError('Must be in the past');
+      return;
     }
 
     const today = new Date();
@@ -79,10 +87,11 @@ function App() {
           </label>
           <input
             type="text"
-            className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6"
+            className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6 mb-2"
             placeholder="DD"
             onChange={(e) => setDay(e.target.value)}
           />
+          {dayError && <p className="text-red">{dayError}</p>}
         </div>
 
         <div>
@@ -94,10 +103,11 @@ function App() {
           </label>
           <input
             type="text"
-            className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6"
+            className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6  mb-2"
             placeholder="MM"
             onChange={(e) => setMonth(e.target.value)}
           />
+          {monthError && <p className="text-red">{monthError}</p>}
         </div>
 
         <div>
@@ -109,10 +119,11 @@ function App() {
           </label>
           <input
             type="text"
-            className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6"
+            className="border border-[#DCDCDC] rounded-lg h-[72px] w-[160px] text-[32px] py-3 px-6 mb-2"
             placeholder="YYYY"
             onChange={(e) => setYear(e.target.value)}
           />
+          {yearError && <p className="text-red">{yearError}</p>}
         </div>
       </div>
 
